@@ -1,11 +1,15 @@
 {
   "name": "orl-metrics-scraper",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Scraper d'articles médicaux multi-journaux",
   "main": "index.js",
-  "scripts": { "start": "node index.js" },
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "express": "^4.19.2",
-    "cheerio": "^1.0.0"
+    "express": "^4.18.2",
+    "cheerio": "^1.0.0",
+    "node-fetch": "^3.3.2"
   }
 }
