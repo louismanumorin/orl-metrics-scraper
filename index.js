@@ -22,31 +22,28 @@ async function scrapeWileyMetrics(doi) {
 
   await page.goto(url, { waitUntil: "networkidle2" });
 
-  // Clique sur l’onglet Information
   await page.waitForSelector('button[aria-controls="information-panel"]', { timeout: 8000 });
   await page.click('button[aria-controls="information-panel"]');
 
-  // Attendre que les métrics apparaissent
   await page.waitForSelector(".metrics", { timeout: 8000 });
 
   const result = await page.evaluate(() => {
-    const metricsBox = document.querySelector(".metrics");
-    if (!metricsBox) return null;
+    const box = document.querySelector(".metrics");
+    if (!box) return null;
 
-    const text = metricsBox.innerText;
+    const text = box.innerText;
 
-    const fullViews = text.match(/Full text views:\s*([\d,]+)/i);
-    const pdf = text.match(/PDF downloads:\s*([\d,]+)/i);
+    const v = text.match(/Full text views:\s*([\d,]+)/i);
+    const p = text.match(/PDF downloads:\s*([\d,]+)/i);
 
     return {
-      views: fullViews ? parseInt(fullViews[1].replace(/,/g, ""), 10) : null,
-      pdfDownloads: pdf ? parseInt(pdf[1].replace(/,/g, ""), 10) : null,
+      views: v ? parseInt(v[1].replace(/,/g, ""), 10) : null,
+      pdfDownloads: p ? parseInt(p[1].replace(/,/g, ""), 10) : null,
       rawText: text
     };
   });
 
   await browser.close();
-
   return result;
 }
 
